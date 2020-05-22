@@ -9,42 +9,39 @@ import java.util.Queue;
 public class StackQueue_Solution3 {
     public int[] solution(int[] progresses, int[] speeds) {
         int[] answer = {};
+        Queue<Integer> answerQueue = new LinkedList<>();
         List<Integer> list = new ArrayList<>();
-        Queue<Integer> work = new LinkedList<>();
-        Queue<Integer> workSpeed = new LinkedList<>();
-        for(int p : progresses){
-            work.offer(p);
-        }
 
-        for(int s : speeds){
-            workSpeed.offer(s);
-        }
-
+        int value = 0;
         int count = 0;
-        int old_time = 100;
-        while(!work.isEmpty()){
-            if(work.peek() < 100) {
-                int time = 0;
-                time = (100 - work.poll()) / workSpeed.poll();
-                if(old_time >= time){
-                    count++;
-                    old_time = time;
-                }else{
-                    list.add(count);
-                    count = 0;
-                }
+        for(int i = 0 ; i < progresses.length ; i++){
+            int time = 0;
+
+            time = (int) Math.ceil((100.0 - progresses[i]) / speeds[i]);
+
+            if(value == 0){
+                value = time;
+                count++;
             }
+            else if(value > time){
+                count++;
+            }else{
+                answerQueue.offer(count);
+                value = time;
+                count = 1;
+            }
+
+            if(i == progresses.length - 1){
+                answerQueue.offer(count);
+            }
+
         }
 
-        if(count != 0){
-            list.add(count);
+        answer = new int[answerQueue.size()];
+        for(int j = 0 ; j <= answerQueue.size() ; j++){
+            answer[j] = answerQueue.poll();
         }
 
-        // int형 배열로 변환
-        answer = new int[list.size()];
-        for (int i = 0; i < list.size(); i++) {
-            answer[i] = list.get(i);
-        }
         return answer;
     }
 
