@@ -22,8 +22,7 @@ public class StackQueue_Solution3 {
             if(value == 0){
                 value = time;
                 count++;
-            }
-            else if(value > time){
+            }else if(value >= time){
                 count++;
             }else{
                 answerQueue.offer(count);
@@ -38,8 +37,10 @@ public class StackQueue_Solution3 {
         }
 
         answer = new int[answerQueue.size()];
-        for(int j = 0 ; j <= answerQueue.size() ; j++){
-            answer[j] = answerQueue.poll();
+        for(int j = 0 ; j < answer.length ; j++){
+            if(!answerQueue.isEmpty()) {
+                answer[j] = answerQueue.poll();
+            }
         }
 
         return answer;
@@ -47,7 +48,7 @@ public class StackQueue_Solution3 {
 
     public static void main(String[] args) {
         StackQueue_Solution3 solution3 = new StackQueue_Solution3();
-        int[] answer = solution3.solution(new int[]{93,30,55}, new int[]{1,30,5});
+        int[] answer = solution3.solution(new int[]{54,33,56}, new int[]{20,13,1});
 
         for(int value : answer){
             System.out.println(value);
