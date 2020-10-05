@@ -1,11 +1,5 @@
 package level2;
 
-import com.sun.deploy.util.StringUtils;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
-
 /**
  *  괄호 변환
  *  https://programmers.co.kr/learn/courses/30/lessons/60058
@@ -13,57 +7,59 @@ import java.util.Stack;
 public class Ex5 {
 
     public static void main(String[] args) {
-
+        System.out.println(new Ex5().solution("()))((()"));
     }
 
-    public String solution(String p) {
-        String answer = "";
-        String u = "";
-        String v = "";
+    public StringBuilder solution(String p) {
+        StringBuilder u = new StringBuilder("");
+        StringBuilder v = new StringBuilder("");
+        int open = 0;
+        int close = 0;
 
         //1
         if(p.isEmpty()){
-            return "";
+            return new StringBuilder("");
         }
 
-        for(int i = 0 ; i < p.length() - 1 ; i++){
-            if(isBalance(p.substring(i, i + 1))){
-                u = p.substring(i, i + 1);
-                v = p.substring(i + 1, p.length());
+        //2
+        for(int i = 0 ; i < p.length() ; i++){
+            if(p.charAt(i) == '('){
+                open++;
+            }else{
+                close++;
+            }
+
+            if(open == close){
+                u.append(p.substring(0, i + 1));
+                v.append(p.substring(i + 1));
                 break;
             }
         }
 
-
-
-
-        return answer;
-    }
-
-    public boolean isBalance(String str){
-        Map<String, Integer> map = new HashMap<>();
-
-        for(int i = 0 ; i < str.length() - 1 ; i++){
-            map.put(str.substring(i, i + 1), map.getOrDefault(str.substring(i, i+1), 0) + 1;
+        if(!"".equals(v.toString())){
+            v = solution(v.toString());
         }
 
-        if(map.get(")") == map.get("(")){
-            return true;
+        if(isCheck(u)){
+            u.append(solution(v.toString()));
+            return u;
         }else{
-            return false;
-        }
-    }
-
-    public boolean isCheck(String str){
-        if(isBalance(str)){
-            Stack<String> stack = new Stack<>();
-
-            for(int i = 0 ; i < str.length() - 1 ; i++){
-                if("(".equals(str.substring(i, i + 1)){
-                    stack.push(i);
+            StringBuilder tmp = new StringBuilder("");
+            tmp.append("(" + v.toString() + ")");
+            for(int i = 1 ; i < u.length() - 1 ; i++){
+                if(u.charAt(i) == ')'){
+                    tmp.append("(");
+                }else{
+                    tmp.append(")");
                 }
             }
-            stack.push()
+            return tmp;
+        }
+    }
+
+    public boolean isCheck(StringBuilder str){
+        if(str.charAt(0) == '(' && str.charAt(str.length() - 1) == ')'){
+            return true;
         }else{
             return false;
         }
